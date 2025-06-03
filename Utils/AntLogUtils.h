@@ -1,7 +1,8 @@
 #pragma once
 
 #include <QString>
-
+#include <QFile>
+#include <QDateTime>
 
 class AntLogUtils {
     public:
@@ -18,8 +19,8 @@ class AntLogUtils {
         static void __deinit__();
 
         static QString time();
-        static QString fileName(const QString &filePath);
-        static messageOutPut(QtMsgType type, const QMessageLogContext &context, const QString &msg);
+        static QString fileName(const char* filename);
+        static void messageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg);
     public:
         static QFile *m_gLogFile;
         static QtMessageHandler m_gDefaultHandler;

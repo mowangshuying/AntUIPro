@@ -1,32 +1,32 @@
 #include "AntLogUtils.h"
 
-QFile *FluLogUtils::gFileLog = nullptr;
-QtMessageHandler FluLogUtils::gDefaultHandler = nullptr;
+QFile *AntLogUtils::m_gLogFile = nullptr;
+QtMessageHandler AntLogUtils::m_gDefaultHandler = nullptr;
 
 void AntLogUtils::__init__()
 {
     QDateTime dateTime = QDateTime::currentDateTime();
     QString timeStr = dateTime.toString("[yyyy-MM-dd][hh_mm_ss_zzz]");
     QString filePath = QString("./log/%1.log").arg(timeStr);
-    gFileLog = new QFile(filePath);
-    if (!gFileLog->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append))
+    m_gLogFile = new QFile(filePath);
+    if (!m_gLogFile->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append))
     {
-        delete gFileLog;
-        gFileLog = nullptr;
+        delete m_gLogFile;
+        m_gLogFile = nullptr;
         return;
     }
 
-    gDefaultHandler = qInstallMessageHandler(myMessageOutput);
+    m_gDefaultHandler = qInstallMessageHandler(messageOutput);
 }
 
-void AntLogUtils::__deinit()
+void AntLogUtils::__deinit__()
 {
-    if (gFileLog == nullptr)
+    if (m_gLogFile == nullptr)
         return;
 
-    gFileLog->close();
-    delete gFileLog;
-    gFileLog = nullptr;
+    m_gLogFile->close();
+    delete m_gLogFile;
+    m_gLogFile = nullptr;
 }
 
 QString AntLogUtils::time()
@@ -36,20 +36,20 @@ QString AntLogUtils::time()
     return timeStr;
 }
 
-QString AntLogUtils::fileName(const char *file)
+QString AntLogUtils::fileName(const char* filename)
 {
-    QString fileStr = file;
+    QString fileStr = filename;
     QString fileNameStr = fileStr.right(fileStr.size() - fileStr.lastIndexOf("\\") - 1);
     return fileNameStr;
 }
 
 void AntLogUtils::messageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    if (gFileLog)
+    if (m_gLogFile != nullptr)
     {
-        QTextStream tWrite(gFileLog);
+        QTextStream tWrite(m_gLogFile);
         tWrite << msg << "\n";
-        gDefaultHandler(type, context, msg);
+        m_gDefaultHandler(type, context, msg);
     }
     else
     {
