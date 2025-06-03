@@ -25,3 +25,32 @@ class AntLogUtils {
         static QFile *m_gLogFile;
         static QtMessageHandler m_gDefaultHandler;
 };
+
+#define LOG_FUNC LOG_DEBUG << ";";
+#define LOG_DEBUG                                                                    \
+    qDebug().nospace() << "[" << AntLogUtils::time().toStdString().c_str() << "]"    \
+                       << "["                                                        \
+                       << "debug"                                                    \
+                       << "]"                                                        \
+                       << "[" << AntLogUtils::fileName(__FILE__).toStdString().c_str() << "][" << __FUNCTION__ << "][" << __LINE__ << "] "
+
+#define LOG_INFO                                                                    \
+    qInfo().nospace() << "[" << AntLogUtils::time().toStdString().c_str() << "]" \
+                      << "["                                                        \
+                      << "info"                                                     \
+                      << "]"                                                        \
+                      << "[" << AntLogUtils::fileName(__FILE__).toStdString().c_str() << "][" << __FUNCTION__ << "][" << __LINE__ << "] "
+
+#define LOG_WARN                                                                       \
+    qWarning().nospace() << "[" << AntLogUtils::time().toStdString().c_str() << "]" \
+                         << "["                                                        \
+                         << "warn"                                                     \
+                         << "]"                                                        \
+                         << "[" << AntLogUtils::fileName(__FILE__).toStdString().c_str() << "][" << __FUNCTION__ << "][" << __LINE__ << "] "
+
+#define LOG_ERR                                                                      \
+    qDebug().nospace() << "[" << AntLogUtils::time().toStdString().c_str() << "]" \
+                       << "["                                                        \
+                       << "err"                                                      \
+                       << "]"                                                        \
+                       << "[" << AntLogUtils::fileName(__FILE__).toStdString().c_str() << "][" << __FUNCTION__ << "][" << __LINE__ << "] "
